@@ -10,8 +10,7 @@ import feedbackRoutes from "./routes/feedback";
 import paymentRoutes from "./routes/payments";
 
 const app = express();
-const PORT = process.env.PORT || 5173
-    ;
+const PORT = process.env.PORT || 5000;
 
 app.use(cors());
 app.use(bodyParser.json());
