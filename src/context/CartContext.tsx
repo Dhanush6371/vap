@@ -39,7 +39,7 @@ const CartContext = createContext<CartContextType>({} as CartContextType);
 export const useCart = () => useContext(CartContext);
 
 // ====== Backend URLs ======
-const BACKEND_BASE = import.meta.env.VITE_API_BASE || "http://localhost:5000/api";
+const BACKEND_BASE = import.meta.env.VITE_API_BASE || "http://localhost:5173/api";
 
 export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);

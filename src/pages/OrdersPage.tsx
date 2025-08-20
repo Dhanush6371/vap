@@ -13,7 +13,7 @@ type Order = {
   status: "completed" | "preparing" | "delivered";
 };
 
-const BACKEND_BASE = import.meta.env.VITE_API_BASE || "http://localhost:5000/api";
+const BACKEND_BASE = import.meta.env.VITE_API_BASE || "http://localhost:5173/api";
 
 const OrdersPage: React.FC = () => {
   const { orders: localOrders, updateOrderFeedback } = useCart();

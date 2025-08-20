@@ -5,7 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import { Trash2 } from "lucide-react";
 
-const BACKEND_BASE = import.meta.env.VITE_API_BASE || "http://localhost:5000/api";
+const BACKEND_BASE = import.meta.env.VITE_API_BASE || "http://localhost:5173/api";
 
 const CartPage: React.FC = () => {
   const { cartItems, removeFromCart, updateCartItem, cartTotal, tableNum, lockTable, releaseTable, addOrder } = useCart();
@@ -32,7 +32,11 @@ const CartPage: React.FC = () => {
     }
     const locked = await lockTable(currentTable);
     if (!locked) return alert("⚠️ Table already in use.");
-    const res = await fetch(`${BACKEND_BASE}/simulate-payment`, { method: "POST" });
+    const res = await fetch(`${BACKEND_BASE}/payment`, { 
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ amount: cartTotal })
+    });
     const data = await res.json();
     if (data.success) { setPaymentDone(true); alert("✅ Payment successful!"); }
     else alert("❌ Payment failed.");

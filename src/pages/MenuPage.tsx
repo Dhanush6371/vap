@@ -5,6 +5,8 @@ import Navbar from '../components/Navbar';
 import { ShoppingCart } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
+const BACKEND_BASE = import.meta.env.VITE_API_BASE || "http://localhost:5173/api";
+
 const MenuPage = () => {
   const { cartItems, addToCart, tableNum, lockTable } = useCart();
   const [menu, setMenu] = useState([]);
@@ -18,33 +20,31 @@ const MenuPage = () => {
       setLoading(false);
     };
     fetchData();
-const token = localStorage.getItem("sessionToken");
+    
+    const token = localStorage.getItem("sessionToken");
     if (!token) {
       navigate("/login");
+      return;
     }
-const token = localStorage.getItem("sessionToken");
-  if (!token) {
-    navigate("/login");
-    return;
-  };
-  const params = new URLSearchParams(window.location.search);
-  const table = params.get("table");
-  if (table) {
-    fetch(`${BACKEND_BASE}/lockTable`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ table }),
-    }).then(res => res.json())
-      .then(data => {
-        if (!data.success) {
-          alert("Table already in use!");
-          navigate("/login");
-        } else {
-          localStorage.setItem("tableNum", table);
-        }
-      });
-  }
-  }, []);
+    
+    const params = new URLSearchParams(window.location.search);
+    const table = params.get("table");
+    if (table) {
+      fetch(`${BACKEND_BASE}/lockTable`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ table }),
+      }).then(res => res.json())
+        .then(data => {
+          if (!data.success) {
+            alert("Table already in use!");
+            navigate("/login");
+          } else {
+            localStorage.setItem("tableNum", table);
+          }
+        });
+    }
+  }, [navigate]);
 
   const handleAdd = async (item) => {
     if (!tableNum) {
