@@ -29,6 +29,6 @@
     "postcss": "^8.4.24",
     "@eslint/js": "^8.44.0",
     "globals": "^13.20.0",
-    "typescript-eslint": "^6.0.0"
+    "typescript-eslint": "^7.0.0"
   }
 }
