@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "commonjs",
+    "outDir": "dist",
+    "rootDir": "src",
+    "strict": true,
+    "esModuleInterop": true,
+    "jsx": "react-jsx",             // 👈 tells TS to support JSX
+    "moduleResolution": "node",
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true
+  },
+  "include": ["src"],               // 👈 makes sure src is compiled
+  "exclude": ["node_modules"]       // 👈 optional but recommended
+}
