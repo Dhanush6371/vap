@@ -32,14 +32,9 @@ const CartPage: React.FC = () => {
     }
     const locked = await lockTable(currentTable);
     if (!locked) return alert("⚠️ Table already in use.");
-    const res = await fetch(`${BACKEND_BASE}/payment`, { 
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ amount: cartTotal })
-    });
-    const data = await res.json();
-    if (data.success) { setPaymentDone(true); alert("✅ Payment successful!"); }
-    else alert("❌ Payment failed.");
+    console.log("Mock payment processed for amount:", cartTotal);
+    setPaymentDone(true);
+    alert("✅ Payment successful!");
   };
 
   const handlePlaceOrder = async () => {

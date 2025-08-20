@@ -99,47 +99,33 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   // ====== Backend Functions ======
   const lockTable = async (table: string): Promise<boolean> => {
     try {
-      const res = await fetch(`${BACKEND_BASE}/lockTable`, {
-        method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ table })
-      });
-      const data = await res.json();
-      if (data.success) { setTableNum(table); return true; }
-      return false;
+      console.log("Mock table locked:", table);
+      setTableNum(table);
+      return true; // Always successful for console usage
     } catch (err) {
       console.error("Lock table error:", err);
-      return false;
+      return true;
     }
   };
 
   const releaseTable = async () => {
     if (!tableNum) return;
     try {
-      await fetch(`${BACKEND_BASE}/releaseTable`, {
-        method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ table: tableNum })
-      });
+      console.log("Mock table released:", tableNum);
     } catch (err) { console.error("Release error:", err); }
     setTableNum(null);
   };
 
   const addOrder = async (order: Omit<Order, 'id' | 'status'>) => {
-    const res = await fetch(`${BACKEND_BASE}/orders`, {
-      method: "POST", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(order)
-    });
-    const saved = await res.json();
-    if (!res.ok) throw new Error(saved.message || "Order save failed");
-    setOrders(prev => [{ ...saved, status: "completed" }, ...prev]);
+    const saved = { ...order, id: Date.now().toString(), status: "completed" as const };
+    console.log("Mock order added:", saved);
+    setOrders(prev => [saved, ...prev]);
     clearCart();
     await releaseTable();
   };
 
   const updateOrderFeedback = async (orderId: string, feedback: string) => {
-    await fetch(`${BACKEND_BASE}/feedback`, {
-      method: "POST", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ orderId, feedback })
-    });
+    console.log("Mock feedback updated for order:", orderId, "feedback:", feedback);
     setOrders(prev => prev.map(o => o.id === orderId ? { ...o, feedback } : o));
   };
 

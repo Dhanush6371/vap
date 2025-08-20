@@ -21,28 +21,14 @@ const MenuPage = () => {
     };
     fetchData();
     
-    const token = localStorage.getItem("sessionToken");
-    if (!token) {
-      navigate("/login");
-      return;
-    }
+    // Set mock session token for console usage
+    localStorage.setItem("sessionToken", "mock-token");
     
     const params = new URLSearchParams(window.location.search);
     const table = params.get("table");
     if (table) {
-      fetch(`${BACKEND_BASE}/lockTable`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ table }),
-      }).then(res => res.json())
-        .then(data => {
-          if (!data.success) {
-            alert("Table already in use!");
-            navigate("/login");
-          } else {
-            localStorage.setItem("tableNum", table);
-          }
-        });
+      console.log("Mock table lock for table:", table);
+      localStorage.setItem("tableNum", table);
     }
   }, [navigate]);
 

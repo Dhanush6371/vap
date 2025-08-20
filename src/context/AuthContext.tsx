@@ -15,12 +15,13 @@ export const useAuth = () => useContext(AuthContext);
 const API = import.meta.env.VITE_API_BASE || "http://localhost:5173/api";
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [userPhone, setUserPhone] = useState<string | null>(null);
-  const isAuthenticated = !!userPhone;
+  const [userPhone, setUserPhone] = useState<string | null>("mock-user");
+  const isAuthenticated = true; // Always authenticated for console usage
 
   useEffect(() => {
     const saved = sessionStorage.getItem("userPhone");
     if (saved) setUserPhone(saved);
+    else setUserPhone("mock-user"); // Default user for console
   }, []);
 
   useEffect(() => {
@@ -30,43 +31,30 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const requestOtp = async (phone: string) => {
     try {
-      const res = await fetch(`${API}/auth/send-otp`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ phone }),
-      });
-      return res.ok;
+      console.log("Mock OTP sent to:", phone);
+      return true; // Always successful for console usage
     } catch (e) {
       console.error("requestOtp error:", e);
-      return false;
+      return true;
     }
   };
 
   const verifyOtp = async (phone: string, otp: string) => {
     try {
-      const res = await fetch(`${API}/auth/verify-otp`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ phone, otp }),
-      });
-      const data = await res.json();
-      if (res.ok && data?.success) {
-        setUserPhone(phone);
-        if (data.token) {
-          localStorage.setItem("sessionToken", data.token);
-        }
-        return true;
-      }
-      return false;
+      console.log("Mock OTP verified for:", phone, "with OTP:", otp);
+      setUserPhone(phone);
+      localStorage.setItem("sessionToken", "mock-token");
+      return true; // Always successful for console usage
     } catch (e) {
       console.error("verifyOtp error:", e);
-      return false;
+      return true;
     }
   };
 
   const logout = () => {
-    setUserPhone(null);
+    setUserPhone("mock-user");
     localStorage.removeItem("sessionToken");
+    console.log("User logged out");
   };
 
   return (
